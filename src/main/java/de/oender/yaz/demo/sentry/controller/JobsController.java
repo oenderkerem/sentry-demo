@@ -27,6 +27,7 @@ public class JobsController {
             Sentry.configureScope(scope -> {
                 scope.setContexts("Employee Action","Document changed");
             });
+            //Todo show multiple breadcumbs
             Sentry.addBreadcrumb(String.format("Document %s marked invalid",id));
             dataBaseSimulator.markAsInvalid(id);
         }
