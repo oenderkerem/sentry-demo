@@ -1,0 +1,206 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    font-size: 20px;
+}
+
+body{
+    padding:1rem;
+}
+
+header, p, section, form, .container{
+    padding:1rem;
+}
+
+p{
+    font-size:1.25rem;
+}
+
+p.big{
+    font-size:1.5rem;
+    font-weight:bold;
+}
+
+.container{
+    display:block;
+    width: 100%;
+}
+
+header{
+    position: sticky;
+    top:0;
+    z-index:2;
+    background-color: white;
+}
+
+section{
+    padding-top:200px;
+    position:relative;
+    min-height: 70vh;
+}
+
+section#first{
+    margin-top:0;
+}
+
+section.vertically-centered{
+    display:grid;
+    align-content:center;
+}
+
+h1,h2,p, form{
+    text-align:center;
+}
+
+.button{
+    margin: 15px;
+    display:inline-block;
+    padding: 0.5rem;
+    color:white;
+    border:none;
+    background-color:#27a3c2;
+    border-radius:5px;
+}
+
+.button.danger{
+    background-color:#ed0909;
+}
+
+.button:hover,.button:focus{
+    background-color:#1c8099;
+}
+
+.danger:hover,
+.danger:focus{
+    background-color:#ff0000;
+}
+
+input, textarea{
+    font-size:1rem;
+    margin: 15px;
+    padding: 0.5rem;
+}
+
+.message{
+    display:block;
+    padding:0.5rem;
+    color: blue;
+}
+
+.error{
+    color: red;
+}
+
+.container.centered{
+    text-align:center;
+}
+
+a{
+    text-decoration:none;
+}
+
+.container--form{
+    display:block;
+    text-align:center;
+}
+
+.collapsable{
+    width: 70%;
+    display:inline-block;
+    padding: 0.5rem;
+    position: relative;
+}
+
+.collapsable .collapsable--header::after{
+    content:'-';
+    position: absolute;
+    display: grid;
+    align-content:center;
+    top:0;
+    bottom:0;
+    right:5px;
+}
+
+.collapsable.collapsed .collapsable--header::after{
+    content:'+';
+}
+
+.collapsable--header{
+    position:relative;
+    padding:0.25rem;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    user-select:none;
+    cursor:pointer;
+    z-index:1;
+}
+
+.collapsable--content{
+    top:0;
+    position: relative;
+    padding:1rem;
+    display:block;
+    transition: all 200ms ease-in-out;
+    overflow:hidden;
+}
+
+.collapsable.collapsed .collapsable--content{
+    top: -50px;
+    opacity:0;
+    max-height:0;
+}
+
+.flex{
+    display:flex;
+}
+
+.flex--center{
+    align-items:center;
+    justify-content:center;
+}
+
+.job{
+    position: relative;
+    margin: 1rem;
+    display:block;
+    border-radius:10px;
+    border: 1px solid gray;
+}
+
+.border{
+    display:inline-block;
+    padding:5px;
+    border-radius:10px;
+    border: 1px solid gray;
+}
+
+.border__green{
+    border-color:green;
+}
+
+.green{
+    color:green;
+}
+
+.red{
+    color:red;
+}
+
+.marker{
+    position:absolute;
+    margin:15px;
+    top:15px;
+    right:15px;
+}
+
+.bold{
+    font-weight:bold;
+}
+
+
+
+

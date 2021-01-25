@@ -1,0 +1,13 @@
+<div th:fragment="jobs(jobs)">
+    <h2>[[${jobs.size()}]] Aufträge</h2>
+    <div class="container">
+        <div th:each="job : ${jobs}">
+            <div class="job">
+                <div >
+                    <div th:insert="~{/components/job.html :: job(job=${job})}"></div>
+                </div>
+                <div class="marker" th:if="${job.isJobFinished()==true}"><span class="border border__green green">Auftrag abgeschlossen</span></div>
+            </div>
+        </div>
+    </div>
+</div>

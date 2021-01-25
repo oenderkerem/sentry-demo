@@ -1,0 +1,11 @@
+<div th:fragment="job">
+    <div class="container">
+        <div th:each="document : ${job.getDocuments()}">
+            <div th:insert="~{components/document.html :: document(document=${document})}"></div>
+        </div>
+        <form action="doJob" method="post">
+            <input type="hidden" name="jobId" th:value="${job.getId()}">
+            <input class="button" type="submit" value="Auftrag ausführen">
+        </form>
+    </div>
+</div>

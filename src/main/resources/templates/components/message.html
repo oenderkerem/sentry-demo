@@ -1,0 +1,12 @@
+<div th:fragment="message" th:with="msg=${msg},error=${error}">
+    <div th:if="${msg}">
+        <div class="message" >
+            <p>[[${msg}]]</p>
+        </div>
+    </div>
+    <div th:if="${error}">
+        <div class="message error" >
+            <p>[[${error}]]</p>
+        </div>
+    </div>
+</div>

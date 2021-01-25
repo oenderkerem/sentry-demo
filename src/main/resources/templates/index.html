@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+    <link rel="stylesheet" th:href="@{/css/prism.css}">
+    <script th:src="@{/script/custom.js}"></script>
+    <script th:src="@{/script/prism.js}"></script>
+</head>
+<body>
+    <header>
+        <h1>Sentry Demo</h1>
+        <div class="container">
+            <div th:insert="~{/components/message.html :: message(msg=${message},error=${error})}"></div>
+        </div>
+    </header>
+    <section id="first" class="vertically-centered">
+        <div class="container">
+            <p class="big">Sentry ist ein Monitoring System um Fehler und die Performance von Anwendungen zu analysieren.</p>
+            <p>Unten sind ein paar Beispiele aufgeführt, wie Sentry verwendet werden kann.</p>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <h2>Setup von Sentry in Spring Boot</h2>
+            <p><b>application.properties</b></p>
+            <pre>
+                <code class="language-properties">
+sentry.dsn=https://6758d92c3bc042cb8c0f2e30499beabe@o503887.ingest.sentry.io/5589614
+sentry.exception-resolver-order=2147483647
+                </code>
+            </pre>
+            <p><b>pom.xml</b></p>
+            <pre><code class="language-markup">
+&ltdependency&gt
+    &ltgroupId&gtio.sentry&lt/groupId&gt
+    &ltartifactId&gtsentry-spring-boot-starter&lt/artifactId&gt
+    &ltversion&gt3.2.0&lt/version&gt
+&lt/dependency&gt
+        </code></pre>
+        </div>
+    </section>
+    <section id="unhandledException">
+        <h2>Unbehandelte Fehler</h2>
+        <div class="container centered">
+            <p>
+                Unerwartete Fehler, die nicht von einem Try-catch Block aufgefangen werden, können von Sentry erkannt werden.
+            </p>
+            <form action="unhandled" method="post">
+                <input type="submit"
+                       class="button danger"
+                       value="Fehler generieren">
+            </form>
+            <div class="container centered">
+                <div class="container centered" layout:replace="~{/components/collapsable.html :: collapsable(title='Code Beispiel')}">
+                    <div layout:fragment="content">
+                        <pre>
+                            <code class="language-java">
+//unexpected error and no try catch block
+
+createError();
+                            </code>
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="rating">
+        <h2>Allgemeine Fehlerbehandlung</h2>
+        <div th:insert="~{components/message.html :: message(msg=${rating_message},error=${rating_error_message})}"></div>
+        <div class="container centered">
+            <p>Bitte Feedback eintragen.</p>
+            <form action="rating" method="post">
+                <label for="stars">Feedback eintragen (1-5)</label>
+                <input id="stars" type="text" name="stars"
+                       placeholder="Feedback 1-5">
+                <input  type="submit"
+                        value="Feedback abgegben"
+                        class="button">
+            </form>
+            <div layout:replace="~{/components/collapsable.html :: collapsable(title='Code Beispiel')}">
+                <div layout:fragment="content">
+                    <pre>
+                        <code class="language-java">
+try {
+   String stars = getStarsFromRequestParameter();
+   System.out.println((Integer.parseInt(stars)));
+} catch (Exception exception) {
+    Sentry.captureException(exception);
+}</code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="error_feedback">
+        <h2>Feedback Beispiel</h2>
+        <div class="container centered">
+            <form action="error_feedback" method="get">
+                <input type="submit" class="button" value="Feedback Form öffnen">
+            </form>
+            <div layout:replace="~{/components/collapsable.html :: collapsable(title='Code Beispiel')}">
+                <div layout:fragment="content">
+                    <pre>
+                        <code class="language-java">
+SentryId sentryId = Sentry.captureMessage("Exception Feedback Example");
+UserFeedback userFeedback = new UserFeedback(sentryId);
+userFeedback.setComments("Some User Comment from the form");
+userFeedback.setEmail("user_mail@example.com");
+userFeedback.setName("Name of the user from the form");
+Sentry.captureUserFeedback(userFeedback);
+                        </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="user">
+        <h2>Example with user</h2>
+        <div th:insert="~{components/message.html :: message(error=${user_error_message})}"></div>
+        <div class="container centered">
+            <p>Nutzerdaten können zu Sentry übertragen werden.</p>
+            <form action="user" method="post">
+                <input type="submit" class="button danger" value="Fehler generieren">
+            </form>
+            <div layout:replace="~{/components/collapsable.html :: collapsable(title='Code Beispiel')}">
+                <div layout:fragment="content">
+                    <pre>
+                        <code class="language-java">
+Sentry.configureScope(scope -> {
+    User user = new User();
+    user.setUsername("Some Username");
+    user.setIpAddress("IP ADRESS CAN BE ENTERED HERE");
+    user.setId("USER ID");
+    user.setEmail("logged_in_user@example.com");
+    user.setOthers(
+            Map.of("Registered since","Project Start",
+            "Average product usage behaviour","Very often")
+    );
+    scope.setUser(user);
+});
+Sentry.captureException(new Exception("User Example Exception"));
+                        </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="context">
+        <h2>Kontext Beispiel</h2>
+        <div th:insert="~{components/message.html :: message(error=${addContextExample_error_message})}"></div>
+        <p>Es können verschiedene Informationen zu einem Fehler hinzugefügt werden.</p>
+        <div class="container centered">
+            <form action="context" method="post">
+                <input type="submit" value="Fehler generieren" class="button danger">
+            </form>
+            <div layout:replace="~{/components/collapsable.html :: collapsable(title='Code Beispiel')}">
+                <div layout:fragment="content">
+                    <pre>
+                        <code class="language-java">
+Sentry.configureScope(scope -> {
+    scope.setContexts("isLoggedIn",false);
+    scope.setContexts("operation mode", "Demo");
+    scope.setContexts("user.age", 13);
+});
+Sentry.captureException(new Exception("Add Context Example"));
+                        </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="message">
+        <div class="container centered">
+            <h1>Nachricht Beispiel</h1>
+            <div th:insert="~{components/message.html :: message(msg=${sentMessage})}"></div>
+            <p>Es können auch ohne Fehler Nachrichten an Sentry übermittelt werden.</p>
+            <form method="post" action="message">
+                <label for="message">Nachricht</label>
+                <input type="text" name="message"><br>
+                <input type="submit" class="button" value="Nachricht senden">
+            </form>
+            <div class="container centered" layout:replace="~{/components/collapsable.html :: collapsable(title='Code Beispiel')}">
+                <div layout:fragment="content">
+                    <pre>
+                        <code class="language-java">
+String message = createSomeMessage();
+Sentry.captureMessage(message);
+                        </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="breadcumbs">
+        <div class="container centered">
+            <h2>Breadcumbs Beispiel</h2>
+            <div class="container">
+                <div th:insert="~{/components/message.html :: message(error=${jobs_error})}"></div>
+                <div th:insert="~{/components/message.html :: message(error=${document_error})}"></div>
+            </div>
+            <div class="container centered">
+                <div th:if="${jobs==null}">
+                    <a href="jobs" class="button">Aufträge laden</a>
+                </div>
+                <div th:unless="${jobs==null}">
+                    <div th:insert="~{components/jobs.html :: jobs(jobs=${jobs})}"></div>
+                </div>
+            </div>
+            <div class="container centered" layout:replace="~{/components/collapsable.html :: collapsable(title='Code Beispiel')}">
+                <div layout:fragment="content">
+                <pre>
+                    <code class="language-java">
+public void markDocumentInvalid(String id){
+    try{
+        dataBase.markAsInvalid(id);
+        Sentry.configureScope(scope -> {
+            Breadcrumb breadcrumb = new Breadcrumb();
+            breadcrumb.setCategory("Document Change");
+            breadcrumb.setMessage(String.format("Document with id %s was set invalid",id));
+            scope.addBreadcrumb(breadcrumb);
+        });
+    }catch (Exception exception){}
+}
+                        </code>
+                    </pre>
+                    <pre>
+                        <code class="language-java">
+public void doJob(String jobId){
+    try {
+        Sentry.configureScope(scope -> {
+            Breadcrumb breadcrumb = new Breadcrumb();
+            breadcrumb.setCategory("Job change");
+            breadcrumb.setMessage(String.format("Job with id %s was started",jobId));
+            scope.addBreadcrumb(breadcrumb);
+        });
+        dataBase.doJob(jobId);
+        Sentry.configureScope(scope -> {
+            Breadcrumb breadcrumb = new Breadcrumb();
+            breadcrumb.setCategory("Job finished");
+            breadcrumb.setMessage(String.format("Job with id %s was finished",jobId));
+            scope.addBreadcrumb(breadcrumb);
+        });
+    }catch (Exception exception){
+        Sentry.captureException(exception);
+    }
+}
+                    </code>
+                </pre>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

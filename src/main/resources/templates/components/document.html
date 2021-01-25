@@ -1,0 +1,10 @@
+<div th:fragment="document(document)">
+    <div class="flex flex--center">
+        <span class="bold">[[${document.getTitle()}]]</span>
+        <form action="markDocumentInvalid" method="post">
+            <input type="hidden" name="id" th:value="${document.getId()}">
+            <input class="button danger" type="submit" value="Fehlerhaft markieren">
+        </form>
+        <span th:if="${document.getValid()==false}" class="red">Ungültiges Dokument</span>
+    </div>
+</div>

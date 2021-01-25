@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error Page</title>
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+</head>
+<body>
+    <h1>Ooops something went wrong</h1>
+    <h2 class="error">Error occured</h2>
+    <p>
+        Du kannst uns Feedback zu dem Fehler geben, damit wir besser verstehen, warum der Fehler aufgetreten ist.
+    </p>
+    <div class="container centered">
+        <form class="container--form" action="/error_feedback" method="post">
+            <label for="name">Name:</label>
+            <br>
+            <input tabindex="1" type="text" id="name" name="name">
+            <br>
+            <label for="email">Email:</label>
+            <br>
+            <input tabindex="2" type="text" id="email" name="email">
+            <br>
+            <label for="comment">Kommentar:</label>
+            <br>
+            <textarea tabindex="3" name="comment" id="comment" cols="30" rows="10"></textarea>
+            <br>
+            <input class="button" type="submit" tabindex="4" value="Feedback senden">
+        </form>
+        <a href="/" class="button">Home</a>
+    </div>
+</body>
+</html>
